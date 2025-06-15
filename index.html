@@ -1,16 +1,23 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Trucker English Challenge</title>
+  <title>Trucker English Game</title>
   <style>
     body { font-family: sans-serif; padding: 20px; }
-    .option-btn { display: block; margin: 10px 0; padding: 10px; width: 100%; max-width: 400px; }
+    .option-btn { display: block; margin: 10px 0; padding: 10px; width: 100%; }
     #next, #finish { margin-top: 20px; display: none; }
+    #mode-buttons button { margin: 10px; padding: 10px 20px; }
   </style>
 </head>
 <body>
-  <h1>🚛 Trucker English Challenge</h1>
+  <h1>🚛 Trucker English Game</h1>
+  <div id="mode-buttons">
+    <button onclick="startTest()">Take 50-Question Test</button>
+    <button onclick="startPractice()">Practice All Questions</button>
+  </div>
+  <div id="progress"></div>
   <div id="question"></div>
   <div>
     <button class="option-btn" id="opt0"></button>
@@ -20,7 +27,7 @@
   </div>
   <div id="explanation"></div>
   <button id="next" onclick="nextQuestion()">Next Question</button>
-  <button id="finish" onclick="showFinalScore()">Finish Game</button>
+  <button id="finish" onclick="showFinalScore()">Finish</button>
 
   <script src="game.js"></script>
 </body>
