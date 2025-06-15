@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trucker English Challenge</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .option-btn { display: block; margin: 10px 0; padding: 10px; }
+    #next { margin-top: 20px; display: none; }
+  </style>
+</head>
+<body>
+  <h1>🚛 Trucker English Challenge</h1>
+  <div id="question"></div>
+  <div>
+    <button class="option-btn" id="opt0"></button>
+    <button class="option-btn" id="opt1"></button>
+    <button class="option-btn" id="opt2"></button>
+    <button class="option-btn" id="opt3"></button>
+  </div>
+  <div id="explanation"></div>
+  <button id="next" onclick="nextQuestion()">Next Question</button>
+
+  <script src="game.js"></script>
+</body>
+</html>
