@@ -1,4 +1,5 @@
-// Trucker English Challenge - Enhanced with Score & Feedback
+
+// Trucker English Challenge - Enhanced with Sound, Progress & Score
 const questions = [
   {
     question: "Choose the correct sentence:",
@@ -38,14 +39,19 @@ const questions = [
 let currentQuestion = 0;
 let score = 0;
 
+const correctSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+const wrongSound = new Audio("https://www.soundjay.com/buttons/sounds/button-10.mp3");
+
 function renderQuestion() {
   const q = questions[currentQuestion];
   document.getElementById("question").innerText = `🚦 Question ${currentQuestion + 1}: ` + q.question;
+  document.getElementById("progress").innerText = `📍 Progress: ${currentQuestion + 1} / ${questions.length}`;
   q.options.forEach((opt, i) => {
     const btn = document.getElementById("opt" + i);
     btn.innerText = opt;
     btn.disabled = false;
     btn.style.backgroundColor = "";
+    btn.style.display = "block";
     btn.onclick = () => checkAnswer(i);
   });
   document.getElementById("explanation").innerText = "";
@@ -54,7 +60,12 @@ function renderQuestion() {
 function checkAnswer(selected) {
   const q = questions[currentQuestion];
   const isCorrect = selected === q.answer;
-  if (isCorrect) score++;
+  if (isCorrect) {
+    score++;
+    correctSound.play();
+  } else {
+    wrongSound.play();
+  }
 
   q.options.forEach((_, i) => {
     const btn = document.getElementById("opt" + i);
@@ -80,6 +91,7 @@ function nextQuestion() {
 
 function showFinalScore() {
   document.getElementById("question").innerText = "🎉 You finished the Trucker English Challenge!";
+  document.getElementById("progress").innerText = "🏁 All questions completed.";
   document.getElementById("explanation").innerText = `🏁 Final Score: ${score} / ${questions.length}`;
   for (let i = 0; i < 4; i++) {
     const btn = document.getElementById("opt" + i);
@@ -90,5 +102,9 @@ function showFinalScore() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const prog = document.createElement("div");
+  prog.id = "progress";
+  prog.style.marginBottom = "10px";
+  document.body.insertBefore(prog, document.getElementById("question"));
   renderQuestion();
 });
