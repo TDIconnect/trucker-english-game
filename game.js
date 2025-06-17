@@ -15,6 +15,7 @@ async function startMode(m) {
   }
   document.getElementById('game').style.display = 'block';
   renderQuestion();
+  updateCheckpoint();
 }
 
 function renderQuestion() {
@@ -58,6 +59,7 @@ function nextQuestion() {
     document.getElementById('score').innerText = `You scored ${score} out of ${questions.length}`;
   } else {
     renderQuestion();
+  updateCheckpoint();
   }
 }
 
@@ -126,6 +128,7 @@ function startCategory(category) {
   score = 0;
   document.getElementById('game').style.display = 'block';
   renderQuestion();
+  updateCheckpoint();
 }
 
 function startCategoryMode() {
@@ -217,6 +220,7 @@ function showSummary() {
       document.getElementById('summary').style.display = 'none';
       document.getElementById('game').style.display = 'block';
       renderQuestion();
+  updateCheckpoint();
     };
     document.getElementById('summary').appendChild(reviewBtn);
   }
@@ -229,5 +233,19 @@ function nextQuestion() {
     showSummary();
   } else {
     renderQuestion();
+  updateCheckpoint();
   }
+}
+
+
+const checkpoints = [
+  "Los Angeles", "Phoenix", "Albuquerque", "Amarillo", "Oklahoma City",
+  "St. Louis", "Indianapolis", "Columbus", "Pittsburgh", "New York"
+];
+
+function updateCheckpoint() {
+  const progress = (current + 1) / questions.length;
+  const index = Math.floor(progress * checkpoints.length);
+  const city = checkpoints[Math.min(index, checkpoints.length - 1)];
+  document.getElementById('checkpoint').innerText = `🚦 Next Stop: ${city}`;
 }
