@@ -15,7 +15,6 @@ async function startMode(m) {
   }
   document.getElementById('game').style.display = 'block';
   renderQuestion();
-  updateCheckpoint();
 }
 
 function renderQuestion() {
@@ -59,7 +58,6 @@ function nextQuestion() {
     document.getElementById('score').innerText = `You scored ${score} out of ${questions.length}`;
   } else {
     renderQuestion();
-  updateCheckpoint();
   }
 }
 
@@ -128,7 +126,6 @@ function startCategory(category) {
   score = 0;
   document.getElementById('game').style.display = 'block';
   renderQuestion();
-  updateCheckpoint();
 }
 
 function startCategoryMode() {
@@ -183,69 +180,39 @@ function showCategoryMenu() {
 }
 
 
-let missedQuestions = [];
-
-function checkAnswer(index) {
-  const q = questions[current];
-  const correct = q.answer;
-  const expl = q.explanation || '';
-  if (index === correct) {
-    score++;
-    document.getElementById('explanation').innerText = '✅ Correct! ' + expl;
-  } else {
-    missedQuestions.push(q);
-    document.getElementById('explanation').innerText = '❌ Incorrect. ' + expl;
-  }
-  Array.from(document.getElementById('options').children).forEach((btn, idx) => {
-    btn.disabled = true;
-    btn.style.background = idx === correct ? '#c8e6c9' : (idx === index ? '#ffcdd2' : '#eee');
-  });
-  document.getElementById('nextBtn').style.display = 'inline-block';
+// Fix category mode launch
+function startCategoryMode() {
+  fetch('questions.json')
+    .then(res => res.json())
+    .then(data => {
+      questions = data;
+      getCategories();
+      showCategoryMenu();
+    });
 }
 
-function showSummary() {
-  document.getElementById('game').style.display = 'none';
-  document.getElementById('summary').style.display = 'block';
-  document.getElementById('score').innerText = `You scored ${score} out of ${questions.length}`;
-
-  if (missedQuestions.length > 0) {
-    const reviewBtn = document.createElement('button');
-    reviewBtn.innerText = "🔁 Review Missed Questions";
-    reviewBtn.className = "button";
-    reviewBtn.onclick = () => {
-      questions = missedQuestions;
-      missedQuestions = [];
-      current = 0;
-      score = 0;
-      document.getElementById('summary').style.display = 'none';
-      document.getElementById('game').style.display = 'block';
-      renderQuestion();
-  updateCheckpoint();
-    };
-    document.getElementById('summary').appendChild(reviewBtn);
-  }
+// Dark mode toggle button (reduced size + class)
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
 }
 
-// Hook into nextQuestion to call showSummary
-function nextQuestion() {
-  current++;
-  if (current >= questions.length || (mode === 'blitz' && score >= 20)) {
-    showSummary();
-  } else {
-    renderQuestion();
-  updateCheckpoint();
-  }
+// Add button (reduced size, better placement)
+function createDarkModeButton() {
+  const btn = document.createElement("button");
+  btn.innerText = "🌓";
+  btn.className = "button";
+  btn.title = "Toggle Dark Mode";
+  btn.style.position = "fixed";
+  btn.style.top = "10px";
+  btn.style.right = "10px";
+  btn.style.padding = "0.4em 0.6em";
+  btn.style.fontSize = "1.2rem";
+  btn.style.borderRadius = "6px";
+  btn.style.zIndex = "1000";
+  btn.onclick = toggleDarkMode;
+  document.body.appendChild(btn);
 }
 
-
-const checkpoints = [
-  "Los Angeles", "Phoenix", "Albuquerque", "Amarillo", "Oklahoma City",
-  "St. Louis", "Indianapolis", "Columbus", "Pittsburgh", "New York"
-];
-
-function updateCheckpoint() {
-  const progress = (current + 1) / questions.length;
-  const index = Math.floor(progress * checkpoints.length);
-  const city = checkpoints[Math.min(index, checkpoints.length - 1)];
-  document.getElementById('checkpoint').innerText = `🚦 Next Stop: ${city}`;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  createDarkModeButton();
+});
