@@ -216,3 +216,40 @@ function createDarkModeButton() {
 document.addEventListener("DOMContentLoaded", () => {
   createDarkModeButton();
 });
+
+
+function showCategoryMenu() {
+  document.getElementById('menu').style.display = 'none';
+  const catDiv = document.createElement('div');
+  catDiv.id = "category-menu";
+  catDiv.innerHTML = "<h2>Select a Category</h2>";
+  catDiv.style.display = "flex";
+  catDiv.style.flexDirection = "column";
+  catDiv.style.alignItems = "center";
+  catDiv.style.gap = "0.8rem";
+  catDiv.style.marginTop = "1rem";
+
+  const emojiMap = {
+    "General English": "📘",
+    "Trucking Vocabulary": "🚚",
+    "Communication": "📞",
+    "Compliance & Safety": "🛡️",
+    "Paperwork & Permits": "📄",
+    "Driving Conditions": "🌨️",
+    "Customer Service": "🤝",
+    "Emergency Response": "🚨"
+  };
+
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'button';
+    btn.innerText = `${emojiMap[cat] || '📁'} ${cat}`;
+    btn.onclick = () => startCategory(cat);
+    catDiv.appendChild(btn);
+  });
+
+  const backBtn = createBackButton();
+  catDiv.appendChild(backBtn);
+
+  document.body.appendChild(catDiv);
+}
