@@ -127,3 +127,54 @@ function startCategory(category) {
   document.getElementById('game').style.display = 'block';
   renderQuestion();
 }
+
+function startCategoryMode() {
+  fetch('questions.json')
+    .then(res => res.json())
+    .then(data => {
+      questions = data;
+      getCategories();
+      showCategoryMenu();
+    });
+}
+
+
+// Insert a back button
+function createBackButton(targetId = 'menu') {
+  const backBtn = document.createElement('button');
+  backBtn.innerText = "🔙 Back";
+  backBtn.className = "button";
+  backBtn.style.marginTop = "1em";
+  backBtn.onclick = () => {
+    document.getElementById('game').style.display = 'none';
+    document.getElementById('summary').style.display = 'none';
+    if (document.getElementById('category-menu')) {
+      document.getElementById('category-menu').remove();
+    }
+    document.getElementById(targetId).style.display = 'block';
+  };
+  return backBtn;
+}
+
+// Add to game and category UI
+function appendBackToGame() {
+  const backBtn = createBackButton();
+  document.getElementById('game').appendChild(backBtn);
+}
+
+function showCategoryMenu() {
+  document.getElementById('menu').style.display = 'none';
+  const catDiv = document.createElement('div');
+  catDiv.id = "category-menu";
+  catDiv.innerHTML = "<h2>Choose a Category</h2>";
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'button';
+    btn.innerText = cat;
+    btn.onclick = () => startCategory(cat);
+    catDiv.appendChild(btn);
+  });
+  const backBtn = createBackButton();
+  catDiv.appendChild(backBtn);
+  document.body.appendChild(catDiv);
+}
