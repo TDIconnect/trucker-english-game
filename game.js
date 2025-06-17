@@ -178,3 +178,56 @@ function showCategoryMenu() {
   catDiv.appendChild(backBtn);
   document.body.appendChild(catDiv);
 }
+
+
+let missedQuestions = [];
+
+function checkAnswer(index) {
+  const q = questions[current];
+  const correct = q.answer;
+  const expl = q.explanation || '';
+  if (index === correct) {
+    score++;
+    document.getElementById('explanation').innerText = '✅ Correct! ' + expl;
+  } else {
+    missedQuestions.push(q);
+    document.getElementById('explanation').innerText = '❌ Incorrect. ' + expl;
+  }
+  Array.from(document.getElementById('options').children).forEach((btn, idx) => {
+    btn.disabled = true;
+    btn.style.background = idx === correct ? '#c8e6c9' : (idx === index ? '#ffcdd2' : '#eee');
+  });
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function showSummary() {
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('summary').style.display = 'block';
+  document.getElementById('score').innerText = `You scored ${score} out of ${questions.length}`;
+
+  if (missedQuestions.length > 0) {
+    const reviewBtn = document.createElement('button');
+    reviewBtn.innerText = "🔁 Review Missed Questions";
+    reviewBtn.className = "button";
+    reviewBtn.onclick = () => {
+      questions = missedQuestions;
+      missedQuestions = [];
+      current = 0;
+      score = 0;
+      document.getElementById('summary').style.display = 'none';
+      document.getElementById('game').style.display = 'block';
+      renderQuestion();
+    };
+    document.getElementById('summary').appendChild(reviewBtn);
+  }
+}
+
+// Hook into nextQuestion to call showSummary
+function nextQuestion() {
+  current++;
+  if (current >= questions.length || (mode === 'blitz' && score >= 20)) {
+    showSummary();
+  } else {
+    renderQuestion();
+  }
+}
