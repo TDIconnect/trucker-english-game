@@ -2,15 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trucker English Game</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      margin: 0; padding: 20px;
       background-color: #f9f9f9;
-      color: #222;
-      transition: background 0.3s, color 0.3s;
+      margin: 0;
+      padding: 20px;
     }
     .dark-mode {
       background-color: #111;
@@ -25,13 +25,6 @@
       border-radius: 8px;
       border: none;
       cursor: pointer;
-    }
-    .option-btn:hover {
-      background-color: #ddd;
-    }
-    .dark-mode .option-btn:hover {
-      background-color: #333;
-      color: #fff;
     }
     #next, #finish, #theme-toggle {
       margin-top: 20px;
@@ -74,6 +67,8 @@
       position: absolute;
       top: 10px;
       right: 10px;
+      background-color: #b80000;
+      color: white;
     }
   </style>
 </head>
@@ -82,7 +77,6 @@
   <div id="mode-buttons">
     <button onclick="startTest()">📋 Take 50-Question Test</button>
     <button onclick="startPractice()">🗂 Practice by Category</button>
-    <button onclick="startAllPractice()">🔀 Practice All Categories</button>
     <button onclick="startBlitz()">🔥 Blitz Mode (60s)</button>
   </div>
   <div id="category-buttons" style="display:none;"></div>
@@ -90,6 +84,7 @@
   <div id="blitz-timer"></div>
   <div id="progress"></div>
   <div id="truck-progress"><div id="truck"></div></div>
+  <div id="progress-city"></div>
   <div id="question" style="margin-top: 20px; font-size: 20px;"></div>
   <div>
     <button class="option-btn" id="opt0"></button>
