@@ -88,3 +88,42 @@ function updateTruckProgress() {
   const progress = (current + 1) / questions.length;
   truck.style.left = `${progress * 100}%`;
 }
+
+
+// Extract all categories from questions
+let categories = [];
+function getCategories() {
+  const set = new Set();
+  questions.forEach(q => {
+    if (q.category) set.add(q.category);
+  });
+  categories = Array.from(set).sort();
+}
+
+// Show category selection menu
+function showCategoryMenu() {
+  document.getElementById('menu').style.display = 'none';
+  const catDiv = document.createElement('div');
+  catDiv.id = "category-menu";
+  catDiv.innerHTML = "<h2>Choose a Category</h2>";
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'button';
+    btn.innerText = cat;
+    btn.onclick = () => startCategory(cat);
+    catDiv.appendChild(btn);
+  });
+  document.body.appendChild(catDiv);
+}
+
+function startCategory(category) {
+  document.getElementById('category-menu').remove();
+  mode = 'category';
+  filtered = questions.filter(q => q.category === category);
+  filtered = filtered.sort(() => 0.5 - Math.random());
+  questions = filtered;
+  current = 0;
+  score = 0;
+  document.getElementById('game').style.display = 'block';
+  renderQuestion();
+}
