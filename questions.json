@@ -1,26 +1,35 @@
 [
   {
-    "question": "What does a red traffic light mean?",
+    "question": "What does 'ETA' stand for in trucking?",
     "options": [
-      "Stop",
-      "Go",
-      "Slow down",
-      "Speed up"
-    ],
-    "answer": 0,
-    "explanation": "Red means stop until the light turns green.",
-    "category": "Compliance & Safety"
-  },
-  {
-    "question": "What is the Bill of Lading?",
-    "options": [
-      "A menu",
-      "A fuel receipt",
-      "A shipping document",
-      "An insurance policy"
+      "Estimated Truck Arrival",
+      "Emergency Transit Access",
+      "Estimated Time of Arrival",
+      "Engine Tuning Adjustment"
     ],
     "answer": 2,
-    "explanation": "The Bill of Lading is a document that lists the cargo and acts as a receipt.",
-    "category": "Paperwork & Permits"
+    "explanation": "ETA means Estimated Time of Arrival."
+  },
+  {
+    "question": "Which of these is a common shipping document?",
+    "options": [
+      "Logbook",
+      "Permit Letter",
+      "Bill of Lading",
+      "Manifest Log"
+    ],
+    "answer": 2,
+    "explanation": "The Bill of Lading is a key document in freight shipping."
+  },
+  {
+    "question": "If your trailer is fishtailing, what should you do?",
+    "options": [
+      "Speed up",
+      "Swerve left",
+      "Brake hard",
+      "Ease off the accelerator"
+    ],
+    "answer": 3,
+    "explanation": "Easing off the accelerator can help regain control."
   }
 ]
