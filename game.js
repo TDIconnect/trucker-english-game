@@ -253,3 +253,67 @@ function showCategoryMenu() {
 
   document.body.appendChild(catDiv);
 }
+
+
+// Streak Tracker
+function updateStreak() {
+  const today = new Date().toISOString().slice(0, 10); // 'YYYY-MM-DD'
+  const lastDate = localStorage.getItem('lastPracticeDate');
+  let streak = parseInt(localStorage.getItem('streak') || '0');
+
+  if (lastDate === today) return; // already recorded today
+
+  if (lastDate) {
+    const prev = new Date(lastDate);
+    const now = new Date(today);
+    const diff = (now - prev) / (1000 * 60 * 60 * 24);
+    if (diff === 1) {
+      streak += 1;
+    } else {
+      streak = 1;
+    }
+  } else {
+    streak = 1;
+  }
+
+  localStorage.setItem('lastPracticeDate', today);
+  localStorage.setItem('streak', streak);
+}
+
+function showStreakBanner() {
+  const streak = parseInt(localStorage.getItem('streak') || '0');
+  const div = document.createElement('div');
+  div.innerText = `🔥 Daily Practice Streak: ${streak}`;
+  div.style.position = 'fixed';
+  div.style.bottom = '10px';
+  div.style.right = '10px';
+  div.style.padding = '0.6em 1em';
+  div.style.background = '#b80000';
+  div.style.color = 'white';
+  div.style.borderRadius = '8px';
+  div.style.zIndex = 1000;
+  div.style.fontWeight = 'bold';
+  document.body.appendChild(div);
+}
+
+// Call it once game starts
+function startMode(m) {
+  mode = m;
+  document.getElementById('menu').style.display = 'none';
+  fetch('questions.json')
+    .then(res => res.json())
+    .then(data => {
+      questions = data;
+      if (mode === 'test') {
+        questions = questions.sort(() => 0.5 - Math.random()).slice(0, 50);
+      } else {
+        questions = questions.sort(() => 0.5 - Math.random());
+      }
+      current = 0;
+      score = 0;
+      document.getElementById('game').style.display = 'block';
+      updateStreak();
+      showStreakBanner();
+      renderQuestion();
+    });
+}
