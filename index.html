@@ -44,6 +44,31 @@
       cursor: pointer;
     }
   </style>
+
+  <style>
+    .dark {
+      background: #111;
+      color: #eee;
+    }
+    #truck-bar {
+      width: 100%;
+      height: 40px;
+      background: #eee;
+      border-radius: 20px;
+      margin: 1em 0;
+      position: relative;
+      overflow: hidden;
+    }
+    #truck {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      background: url('https://cdn-icons-png.flaticon.com/512/743/743922.png') no-repeat center/contain;
+      transition: left 0.4s ease;
+    }
+  </style>
 </head>
 <body>
   <h1>🚛 Trucker English Game</h1>
@@ -53,6 +78,7 @@
     <button class="button" onclick="startMode('blitz')">⚡ Blitz Mode</button>
   </div>
 
+  <div id="truck-bar"><div id="truck"></div></div>
   <div id="game">
     <h2 id="question"></h2>
     <div id="options"></div>

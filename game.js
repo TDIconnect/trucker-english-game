@@ -60,3 +60,31 @@ function nextQuestion() {
     renderQuestion();
   }
 }
+
+
+// Dark mode toggle
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+}
+
+// Insert dark mode button
+const themeBtn = document.createElement("button");
+themeBtn.innerText = "🌓 Toggle Dark Mode";
+themeBtn.className = "button";
+themeBtn.style.position = "fixed";
+themeBtn.style.top = "10px";
+themeBtn.style.right = "10px";
+themeBtn.onclick = toggleDarkMode;
+document.body.appendChild(themeBtn);
+
+// Play sound effects
+const correctSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+const wrongSound = new Audio("https://www.soundjay.com/buttons/sounds/button-10.mp3");
+
+// Truck progress bar update
+function updateTruckProgress() {
+  const truck = document.getElementById("truck");
+  if (!truck) return;
+  const progress = (current + 1) / questions.length;
+  truck.style.left = `${progress * 100}%`;
+}
