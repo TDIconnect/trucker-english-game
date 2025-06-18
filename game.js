@@ -56,6 +56,11 @@ function nextQuestion() {
     document.getElementById('game').style.display = 'none';
     document.getElementById('summary').style.display = 'block';
     document.getElementById('score').innerText = `You scored ${score} out of ${questions.length}`;
+
+  if (mode === 'test' || mode === 'category') {
+    saveTestHistory(score, questions.length);
+  }
+
   } else {
     renderQuestion();
   }
@@ -403,6 +408,55 @@ function showLeaderboard() {
     if (confirm("Are you sure you want to clear all scores?")) {
       localStorage.removeItem("leaderboard");
       showLeaderboard();
+    }
+  };
+  div.appendChild(resetBtn);
+
+  const backBtn = createBackButton();
+  div.appendChild(backBtn);
+  document.body.appendChild(div);
+}
+
+
+// Save test score to history
+function saveTestHistory(score, total) {
+  const name = getUserName();
+  const date = new Date().toISOString().slice(0, 10);
+  const category = mode === 'category' ? questions[0]?.category || 'Mixed' : 'Mixed';
+  const entry = { name, score, total, category, date };
+  let history = JSON.parse(localStorage.getItem("testHistory") || "[]");
+  history.push(entry);
+  history = history.slice(-10);
+  localStorage.setItem("testHistory", JSON.stringify(history));
+}
+
+// Show test history from menu
+function showTestHistory() {
+  const div = document.createElement("div");
+  div.id = "test-history";
+  div.innerHTML = "<h2>📋 Test History</h2>";
+  div.style.margin = "1em auto";
+  div.style.maxWidth = "600px";
+  const history = JSON.parse(localStorage.getItem("testHistory") || "[]");
+  if (history.length === 0) {
+    div.innerHTML += "<p>No tests taken yet.</p>";
+  } else {
+    const list = document.createElement("ol");
+    history.reverse().forEach(entry => {
+      const li = document.createElement("li");
+      li.innerText = `${entry.name} – ${entry.score}/${entry.total} – ${entry.category} – ${entry.date}`;
+      list.appendChild(li);
+    });
+    div.appendChild(list);
+  }
+
+  const resetBtn = document.createElement("button");
+  resetBtn.innerText = "🗑️ Clear History";
+  resetBtn.className = "button";
+  resetBtn.onclick = () => {
+    if (confirm("Clear all test history?")) {
+      localStorage.removeItem("testHistory");
+      showTestHistory();
     }
   };
   div.appendChild(resetBtn);
