@@ -465,3 +465,37 @@ function showTestHistory() {
   div.appendChild(backBtn);
   document.body.appendChild(div);
 }
+
+
+// Daily Challenge Mode
+function startDailyChallenge() {
+  const today = new Date().toISOString().slice(0, 10);
+  if (localStorage.getItem('dailyDone') === today) {
+    alert("✅ You already completed today's challenge!");
+    return;
+  }
+
+  fetch('questions.json')
+    .then(res => res.json())
+    .then(data => {
+      questions = data.sort(() => 0.5 - Math.random()).slice(0, 5);
+      mode = 'daily';
+      current = 0;
+      score = 0;
+      missedQuestions = [];
+      document.getElementById('menu').style.display = 'none';
+      document.getElementById('game').style.display = 'block';
+      renderQuestion();
+    });
+}
+
+// Modify showSummary for daily challenge
+const previousShowSummary = showSummary;
+showSummary = function () {
+  previousShowSummary();
+  const today = new Date().toISOString().slice(0, 10);
+  if (mode === 'daily') {
+    localStorage.setItem('dailyDone', today);
+    updateStreak();
+  }
+}
