@@ -317,3 +317,60 @@ function startMode(m) {
       renderQuestion();
     });
 }
+
+
+// Prompt for username and store locally
+function getUserName() {
+  let name = localStorage.getItem("username");
+  if (!name) {
+    name = prompt("Enter your name or CB handle:");
+    if (name) localStorage.setItem("username", name);
+    else name = "Anonymous";
+  }
+  return name;
+}
+
+// Save Blitz score to leaderboard
+function saveBlitzScore(score) {
+  const name = getUserName();
+  const date = new Date().toISOString().slice(0, 10);
+  const entry = { name, score, date };
+  let leaderboard = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+  leaderboard.push(entry);
+  leaderboard.sort((a, b) => b.score - a.score);
+  leaderboard = leaderboard.slice(0, 5);
+  localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+}
+
+// Show leaderboard on main menu
+function showLeaderboard() {
+  const div = document.createElement("div");
+  div.id = "leaderboard";
+  div.innerHTML = "<h2>🏆 Top Blitz Scores</h2>";
+  div.style.margin = "1em auto";
+  div.style.maxWidth = "600px";
+  const scores = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+  if (scores.length === 0) {
+    div.innerHTML += "<p>No scores yet. Play Blitz mode!</p>";
+  } else {
+    const list = document.createElement("ol");
+    scores.forEach(entry => {
+      const li = document.createElement("li");
+      li.innerText = `${entry.name} – ${entry.score} – ${entry.date}`;
+      list.appendChild(li);
+    });
+    div.appendChild(list);
+  }
+  const backBtn = createBackButton();
+  div.appendChild(backBtn);
+  document.body.appendChild(div);
+}
+
+// Inject leaderboard hook into summary
+const originalSummary = showSummary;
+showSummary = function () {
+  originalSummary();
+  if (mode === 'blitz') {
+    saveBlitzScore(score);
+  }
+}
