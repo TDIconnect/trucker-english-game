@@ -374,3 +374,40 @@ showSummary = function () {
     saveBlitzScore(score);
   }
 }
+
+
+// Extend leaderboard with reset button
+function showLeaderboard() {
+  const div = document.createElement("div");
+  div.id = "leaderboard";
+  div.innerHTML = "<h2>🏆 Top Blitz Scores</h2>";
+  div.style.margin = "1em auto";
+  div.style.maxWidth = "600px";
+  const scores = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+  if (scores.length === 0) {
+    div.innerHTML += "<p>No scores yet. Play Blitz mode!</p>";
+  } else {
+    const list = document.createElement("ol");
+    scores.forEach(entry => {
+      const li = document.createElement("li");
+      li.innerText = `${entry.name} – ${entry.score} – ${entry.date}`;
+      list.appendChild(li);
+    });
+    div.appendChild(list);
+  }
+
+  const resetBtn = document.createElement("button");
+  resetBtn.innerText = "🗑️ Clear Leaderboard";
+  resetBtn.className = "button";
+  resetBtn.onclick = () => {
+    if (confirm("Are you sure you want to clear all scores?")) {
+      localStorage.removeItem("leaderboard");
+      showLeaderboard();
+    }
+  };
+  div.appendChild(resetBtn);
+
+  const backBtn = createBackButton();
+  div.appendChild(backBtn);
+  document.body.appendChild(div);
+}
