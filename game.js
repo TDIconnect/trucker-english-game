@@ -499,3 +499,82 @@ showSummary = function () {
     updateStreak();
   }
 }
+
+
+function showCustomQuizBuilder() {
+  document.getElementById('menu').style.display = 'none';
+
+  const builder = document.createElement("div");
+  builder.id = "quiz-builder";
+  builder.style.maxWidth = "500px";
+  builder.style.margin = "2em auto";
+  builder.style.padding = "1em";
+  builder.style.border = "2px solid #ccc";
+  builder.style.borderRadius = "10px";
+  builder.style.background = "#f0f0f0";
+  builder.style.textAlign = "center";
+
+  builder.innerHTML = "<h2>🎛️ Build Custom Quiz</h2>";
+
+  const label1 = document.createElement("label");
+  label1.innerText = "Select number of questions:";
+  builder.appendChild(label1);
+
+  const numSelect = document.createElement("select");
+  [5, 10, 25, 50, 100].forEach(n => {
+    const opt = document.createElement("option");
+    opt.value = n;
+    opt.innerText = n;
+    numSelect.appendChild(opt);
+  });
+  builder.appendChild(numSelect);
+
+  builder.appendChild(document.createElement("br"));
+  builder.appendChild(document.createElement("br"));
+
+  const label2 = document.createElement("label");
+  label2.innerText = "Choose category (optional):";
+  builder.appendChild(label2);
+
+  const catSelect = document.createElement("select");
+  const defaultOpt = document.createElement("option");
+  defaultOpt.value = "";
+  defaultOpt.innerText = "All Categories";
+  catSelect.appendChild(defaultOpt);
+
+  const uniqueCats = [...new Set(questions.map(q => q.category))];
+  uniqueCats.forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat;
+    opt.innerText = cat;
+    catSelect.appendChild(opt);
+  });
+  builder.appendChild(catSelect);
+
+  builder.appendChild(document.createElement("br"));
+  builder.appendChild(document.createElement("br"));
+
+  const startBtn = document.createElement("button");
+  startBtn.innerText = "Start Quiz";
+  startBtn.className = "button";
+  startBtn.onclick = () => {
+    const count = parseInt(numSelect.value);
+    const selectedCat = catSelect.value;
+    const filtered = selectedCat
+      ? questions.filter(q => q.category === selectedCat)
+      : [...questions];
+    mode = "custom";
+    score = 0;
+    current = 0;
+    questions = filtered.sort(() => 0.5 - Math.random()).slice(0, count);
+    builder.remove();
+    document.getElementById('game').style.display = 'block';
+    renderQuestion();
+  };
+
+  builder.appendChild(startBtn);
+  const backBtn = createBackButton();
+  builder.appendChild(backBtn);
+
+  document.body.appendChild(builder);
+}
