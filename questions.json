@@ -1,5 +1,18 @@
 [
   {
+    "question": "audio://What did the dispatcher say?",
+    "options": [
+      "Go to Dock 7",
+      "You're late",
+      "Deliver at 9 AM",
+      "Call me back"
+    ],
+    "answer": 0,
+    "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    "explanation": "The dispatcher said 'Go to Dock 7'.",
+    "category": "Communication"
+  },
+  {
     "question": "Choose the correct sentence.",
     "options": [
       "He drive a truck.",

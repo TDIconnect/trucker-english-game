@@ -578,3 +578,37 @@ function showCustomQuizBuilder() {
 
   document.body.appendChild(builder);
 }
+
+
+// Modified renderQuestion to support audio playback
+function renderQuestion() {
+  const q = questions[current];
+  const qElem = document.getElementById("question");
+  const opts = document.getElementById("options");
+  const exp = document.getElementById("explanation");
+
+  qElem.innerHTML = "";
+  opts.innerHTML = "";
+  exp.innerText = "";
+
+  if (q.audio) {
+    const player = document.createElement("audio");
+    player.controls = true;
+    player.src = q.audio;
+    qElem.innerHTML = "🎧 Listen and choose the correct answer:";
+    qElem.appendChild(player);
+  } else {
+    qElem.innerText = `❓ ${q.question}`;
+  }
+
+  for (let i = 0; i < 4; i++) {
+    const btn = document.createElement("button");
+    btn.className = "option-btn";
+    btn.innerText = q.options[i];
+    btn.onclick = () => checkAnswer(i);
+    opts.appendChild(btn);
+  }
+
+  document.getElementById("nextBtn").style.display = "none";
+  updateCheckpoint?.();
+}
